@@ -1,0 +1,24 @@
+{
+  "name": "Jesse",
+  "description": "Jesse Lauriston Livermore，1877--1940",
+  "version": "0.0.1",
+  "homepage": "https://github.com/peigong/Jesse",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peigong/Jesse.git"
+  },
+  "author": {
+    "name": "周培公",
+    "email": "peigong@foxmail.com",
+    "url": "http://www.peigong.net/"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "engines": {
+    "node": ">= 0.12"
+  },
+  "license": "MIT"
+}
