@@ -1,0 +1,42 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title></title>
+    <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="bower_components/JavaScript-MD5/js/md5.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+    console.log(typeof md5);
+    console.log('1401fb5e203be69c95ec5ccf30657de4' == md5('www.icaifu.com'));
+    console.log('e8c7a8b2e2893db247ceb3ef4b4edb27' == md5('i财富理财网'));
+
+    var openid = 'peigong',
+        appkey = '4byfsrm44vjkk10ixfltp',
+        params = [],
+        o = {
+            'openid': openid,
+            '_type': 'json'
+        }, keys;
+        o.symbol = '601668.sh';
+        o.type = 1;
+        o.startDate = '20140101';
+
+        keys = _.keys(o);
+        keys = keys.sort();
+        _.each(keys, function(key){
+            params.push([key, o[key]].join('='));
+        });
+        params = params.join('&');
+        var sign = md5(params + appkey);
+        params += '&sign_type=' + 'MD5';
+        params += '&sign=' + sign;
+        console.log(params);
+        window.open(['http://api.icaifu.com/v1/stock/quote/history', params].join('?'));
+    </script>
+</body>
+</html>
