@@ -1,0 +1,47 @@
+@import url('./themes/light-green.less');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: @text-color;
+    font-size: 12px;
+    font-family: 微软雅黑, 宋体;
+    line-height: 200%;
+    background-color: #ffffff;
+
+    a {
+        color: @link-color;
+        font-weight: normal;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: @link-hover-color;
+    }
+
+    header.main, footer.main {
+        z-index: 100;
+        padding-left: 1rem;
+        background-color: #ffffff;
+    }
+    header.main {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        background: @brand-bg-primary;
+        border-top: 2px solid @brand-primary;
+        hgroup {
+            h1, h2 {
+                display: inline-block;
+            }
+            h1 {
+                font-weight: bold;
+            }
+        }
+    }
+    footer.main #copyright {
+        width: 25%;
+        border-top: 1px solid @brand-primary;
+    }
+}
