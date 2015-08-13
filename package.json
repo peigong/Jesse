@@ -15,11 +15,12 @@
   "dependencies": {
   },
   "devDependencies": {
+    "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^0.10.0",
-    "gulp-clean": "^0.3.1",
     "gulp-less": "^3.0.3",
-    "gulp-jade": "^1.1.0"
+    "gulp-jade": "^1.1.0",
+    "run-sequence": "^1.1.0"
   },
   "engines": {
     "node": ">= 0.12"
