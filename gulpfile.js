@@ -34,7 +34,7 @@ gulp.task('archive:copy:css', function() {
 });
 
 gulp.task('build:clean', function(cb) {
-    del(['./dist', './.tmp'], cb);
+    del(['./dist'], cb);
 });
 
 gulp.task('build:less', function() {
