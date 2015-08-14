@@ -1,10 +1,8 @@
-var del = require('del');
 var gulp = require('gulp'),
     $ = require('gulp-load-plugins')();
 
-// Temporary solution until gulp 4
-// https://github.com/gulpjs/gulp/issues/355
-var runSequence = require('run-sequence');
+var del = require('del'),
+    runSequence = require('run-sequence');
 
 var config = {
     path: {
@@ -16,6 +14,23 @@ var config = {
       jade: './dist/jesse'
     }
 };
+var bower_components = [
+    'bower_components/requirejs/require.js',
+    'bower_components/underscore/underscore.js',
+    'bower_components/JavaScript-MD5/js/md5.js',
+    'bower_components/zeptojs/src/zepto.js',
+    'bower_components/zeptojs/src/event.js',
+    'bower_components/zeptojs/src/ajax.js',
+    'bower_components/zeptojs/src/ie.js',
+    'bower_components/zeptojs/src/detect.js',
+    'bower_components/zeptojs/src/fx.js',
+    'bower_components/zeptojs/src/deferred.js',
+    'bower_components/zeptojs/src/callbacks.js',
+    'bower_components/zeptojs/src/touch.js',
+    'bower_components/zeptojs/src/gesture.js'
+];
+
+
 gulp.task('archive', function(cb) {
   runSequence([
       'archive:copy:favicon',
@@ -43,22 +58,29 @@ gulp.task('build:less', function() {
     .pipe(gulp.dest(config.dist.css))
 });
 
-gulp.task('build:jade', function() {
+gulp.task('build:html', function() {
     gulp.src(config.path.jade)
-    .pipe($.jade())
+    .pipe($.jade({
+        pretty: true
+    }))
+    .pipe($.inject(gulp.src(bower_components, { read: false })))
+    .pipe($.usemin({
+        assetsDir: '.',
+        js: [$.uglify()]
+    }))
     .pipe(gulp.dest(config.dist.jade))
 });
 
 gulp.task('build', function(cb) {
     runSequence(
         'build:clean',
-        ['archive', 'build:less', 'build:jade'],
+        ['archive', 'build:less', 'build:html'],
     cb);
 });
 
 gulp.task('watch', function() {
     gulp.watch(config.path.less, ['build:less']);
-    gulp.watch(config.path.jade, ['build:jade']);
+    gulp.watch(config.path.jade, ['build:html']);
 });
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', ['build']);
