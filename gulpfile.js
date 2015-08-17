@@ -18,6 +18,7 @@ var bower_components = [
     'bower_components/requirejs/require.js',
     'bower_components/underscore/underscore.js',
     'bower_components/JavaScript-MD5/js/md5.js',
+    'bower_components/way.js/way.js',
     'bower_components/zeptojs/src/zepto.js',
     'bower_components/zeptojs/src/event.js',
     'bower_components/zeptojs/src/ajax.js',
@@ -30,6 +31,9 @@ var bower_components = [
     'bower_components/zeptojs/src/gesture.js'
 ];
 
+gulp.task('build:clean', function(cb) {
+    del(['./dist'], cb);
+});
 
 gulp.task('archive', function(cb) {
   runSequence([
@@ -46,10 +50,6 @@ gulp.task('archive:copy:favicon', function() {
 gulp.task('archive:copy:css', function() {
     return gulp.src('./src/css/*.css', { base: './src/css' })
     .pipe(gulp.dest(config.dist.css))
-});
-
-gulp.task('build:clean', function(cb) {
-    del(['./dist'], cb);
 });
 
 gulp.task('build:less', function() {

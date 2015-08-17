@@ -9,9 +9,10 @@
   "license": "MIT",
   "dependencies": {
       "requirejs": "~2.1.17",
-      "zeptojs": "~1.1.4",
       "underscore": "~1.8.3",
-      "JavaScript-MD5": "https://github.com/blueimp/JavaScript-MD5.git"
+      "way.js": "master",
+      "JavaScript-MD5": "https://github.com/blueimp/JavaScript-MD5.git",
+      "zeptojs": "~1.1.4"
   },
   "ignore": [
     "**/.*",
