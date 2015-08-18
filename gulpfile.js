@@ -2,6 +2,8 @@ var gulp = require('gulp'),
     $ = require('gulp-load-plugins')();
 
 var del = require('del'),
+    merge = require('merge-stream'),
+    requireDir = require('require-dir'),
     runSequence = require('run-sequence');
 
 var config = {
@@ -39,8 +41,7 @@ gulp.task('build:clean', function(cb) {
 
 gulp.task('archive', function(cb) {
   runSequence([
-      'archive:copy:favicon',
-      'archive:copy:css'
+      'archive:copy:favicon'
     ], cb);
 });
 
@@ -49,14 +50,16 @@ gulp.task('archive:copy:favicon', function() {
     .pipe(gulp.dest('./dist/jesse/'));
 });
 
-gulp.task('archive:copy:css', function() {
-    return gulp.src('./src/css/*.css', { base: './src/css' })
-    .pipe(gulp.dest(config.dist.css));
-});
+gulp.task('build:css', function() {
+    var sCss = gulp.src('./src/css/*.css', { base: './src/css' })
+        .pipe(gulp.dest(config.dist.css));
+    var sLess = gulp.src(config.path.less)
+        .pipe($.less())
+        .pipe(gulp.dest(config.dist.css));
 
-gulp.task('build:less', function() {
-    gulp.src(config.path.less)
-    .pipe($.less())
+    merge(sCss, sLess)
+    .pipe($.minifyCss())
+    .pipe($.filter(['index.css'], { restore: true }))
     .pipe(gulp.dest(config.dist.css));
 });
 
@@ -116,7 +119,7 @@ gulp.task('build:html', function() {
 gulp.task('build', function(cb) {
     runSequence(
         'build:clean',
-        ['archive', 'build:less', 'build:js', 'build:html'],
+        ['archive', 'build:css', 'build:js', 'build:html'],
     cb);
 });
 
@@ -124,5 +127,5 @@ gulp.task('watch', function() {
     gulp.watch(config.path.less, ['build:less']);
     gulp.watch(config.path.jade, ['build:html']);
 });
-
+var tasks = requireDir('./tools/tasks');
 gulp.task('default', ['build']);
