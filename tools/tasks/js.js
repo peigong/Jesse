@@ -2,12 +2,9 @@ var gulp = require('gulp'),
     $ = require('gulp-load-plugins')();
 
 var config = {
-    path: {
-      coffee: './src/coffee/*.coffee'
-    },
-    dist: {
-      js: './dist/jesse/scripts'
-    }
+    tmp: './.tmp/js',
+    coffee: './src/coffee/*.coffee',
+    js: 'dist/jesse/scripts'
 };
 
 gulp.task('build:js', function() {
@@ -27,7 +24,7 @@ gulp.task('build:js', function() {
         //dir: 'dist/scripts/app',
         // 仅优化单个模块及其依赖项
         name: 'app',
-        out: [config.dist.js, 'app.js'].join('/'),
+        out: 'app.js',
         // 在 RequireJS 2.0.2 中，输出目录的所有资源会在 build 前被删除
         // 值为 true 时 rebuild 更快，但某些特殊情景下可能会出现无法预料的异常
         keepBuildDir: true,
@@ -43,9 +40,9 @@ gulp.task('build:js', function() {
         //uglify2: {} // https://github.com/mishoo/UglifyJS2
     };
 
-    gulp.src(config.path.coffee)
+    gulp.src(config.coffee)
     .pipe($.coffee())
-    .pipe(gulp.dest(config.dist.js))
+    .pipe(gulp.dest(config.tmp))
     .pipe($.requirejsOptimize(options))
-    .pipe(gulp.dest(config.dist.js));
+    .pipe(gulp.dest(config.js));
 });

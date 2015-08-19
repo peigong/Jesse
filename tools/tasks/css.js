@@ -3,26 +3,20 @@ var gulp = require('gulp'),
     merge = require('merge-stream');
 
 var config = {
-    path: {
-      less: './src/less/*.less'
-    },
-    dist: {
-      css: './dist/jesse/styles'
-    }
+    tmp: './.tmp/css',
+    less: './src/less/*.less',
+    css: './dist/jesse/styles'
 };
 
 gulp.task('build:css', function() {
     var sCss = gulp.src('./src/css/*.css', { base: './src/css' })
-        .pipe(gulp.dest(config.dist.css));
-    var sLess = gulp.src(config.path.less)
+        .pipe(gulp.dest(config.tmp));
+    var sLess = gulp.src(config.less)
         .pipe($.less())
-        .pipe(gulp.dest(config.dist.css));
-    var filter = $.filter(['index.css'], { restore: true });
+        .pipe(gulp.dest(config.tmp));
+
     merge(sCss, sLess)
     .pipe($.minifyCss())
-    .pipe(gulp.dest(config.dist.css))
-    .pipe($.ignore.include('index.css'))
-    .pipe(filter)
-    .pipe(filter.restore)
-    .pipe(gulp.dest(config.dist.css))
+    .pipe($.filter('index.css'))
+    .pipe(gulp.dest(config.css));
 });
