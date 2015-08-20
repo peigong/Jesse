@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "del": "^1.2.0",
+    "coffee-script": "^1.9.3",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-less": "^3.0.3",
