@@ -43,3 +43,5 @@ gulp.task 'build:js', (cb) ->
     .pipe gulp.dest config.tmp
     .pipe $.requirejsOptimize options
     .pipe gulp.dest config.js
+
+gulp.watch config.coffee, ['build:js']

@@ -33,3 +33,5 @@ gulp.task 'build:html', (cb) ->
         js: [$.uglify()]
     }
     .pipe gulp.dest config.dist
+
+gulp.watch config.path, ['build:html']
