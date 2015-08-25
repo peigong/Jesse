@@ -1,12 +1,8 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
-
-config =
-    path: './src/*.jade'
-    dist: './dist/jesse'
+config = require '../config'
 
 bower_components = [
-    'bower_components/requirejs/require.js',
     'bower_components/underscore/underscore.js',
     'bower_components/JavaScript-MD5/js/md5.js',
     'bower_components/way.js/way.js',
@@ -22,16 +18,18 @@ bower_components = [
     'bower_components/zeptojs/src/gesture.js'
 ]
 
+useminOptions =
+    assetsDir: '.'
+    #js: [$.uglify()]
+
 gulp.task 'build:html', (cb) ->
-    gulp.src config.path
+    gulp.src 'bower_components/requirejs/require.js', { base: './bower_components/requirejs' }
+    .pipe gulp.dest config.scripts
+
+    gulp.src config.jade
     .pipe $.jade({
         pretty: true
     })
     .pipe $.inject gulp.src bower_components, { read: false }
-    .pipe $.usemin {
-        assetsDir: '.',
-        js: [$.uglify()]
-    }
+    .pipe $.usemin useminOptions
     .pipe gulp.dest config.dist
-
-gulp.watch config.path, ['build:html']

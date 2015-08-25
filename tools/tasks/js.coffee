@@ -1,10 +1,6 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
-
-config =
-    tmp: './.tmp/js'
-    coffee: './src/coffee/*.coffee'
-    js: 'dist/jesse/scripts'
+config = require '../config'
 
 # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
 options =
@@ -40,8 +36,6 @@ options =
 gulp.task 'build:js', (cb) ->
     gulp.src config.coffee
     .pipe $.coffee()
-    .pipe gulp.dest config.tmp
+    .pipe gulp.dest "#{ config.tmp }/js"
     .pipe $.requirejsOptimize options
-    .pipe gulp.dest config.js
-
-gulp.watch config.coffee, ['build:js']
+    .pipe gulp.dest config.scripts

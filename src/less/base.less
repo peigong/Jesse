@@ -10,7 +10,6 @@ body {
     font-family: 微软雅黑, 宋体;
     line-height: 200%;
     background-color: #ffffff;
-
     a {
         color: @link-color;
         font-weight: normal;
@@ -21,7 +20,7 @@ body {
         color: @link-hover-color;
     }
 
-    header.main, footer.main {
+    header.main, div.wrapper, footer.main {
         z-index: 100;
         padding-left: 1rem;
         background-color: #ffffff;
@@ -34,6 +33,10 @@ body {
         h1 {
             font-size: 1.2rem;
         }
+    }
+    div.wrapper {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
     footer.main #copyright {
         width: 25%;
