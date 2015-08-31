@@ -7,6 +7,6 @@ gulp.task 'archive', (cb) ->
       'archive:copy:favicon'
     ], cb
 
-gulp.task 'archive:copy:favicon', (cb) ->
+gulp.task 'archive:copy:favicon', () ->
     gulp.src './src/favicon.ico', { base: './src' }
     .pipe gulp.dest config.dist

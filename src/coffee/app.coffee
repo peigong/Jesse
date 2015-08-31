@@ -1,9 +1,10 @@
-requirejs.config
-    baseUrl: 'scripts/app'
-    shim:
-        jquery:
-            exports: '$'
-
 require [
-], () ->
-    console.log 'ok'
+    'jquery',
+    'md5',
+    'underscore',
+    'way'
+], ($, md5, _, way) ->
+    console.log $
+    console.log md5
+    console.log _
+    console.log way

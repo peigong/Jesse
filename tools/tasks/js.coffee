@@ -1,6 +1,9 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
+runSequence = require 'run-sequence'
+
 config = require '../config'
+tmp = "#{ config.tmp }/js"
 
 # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
 options =
@@ -13,7 +16,7 @@ options =
     # 模块根目录。默认情况下所有模块资源都相对此目录。
     # 若该值未指定，模块则相对build文件所在目录。
     # 若appDir值已指定，模块根目录baseUrl则相对appDir。
-    mainConfigFile: 'src/requirejs.conf.js'
+    mainConfigFile: 'tools/requirejs.conf.js'
     # 指定输出目录，若值未指定，则相对 build 文件所在目录
     #dir: 'dist/scripts/app',
     # 仅优化单个模块及其依赖项
@@ -33,9 +36,54 @@ options =
     preserveLicenseComments: false
     #uglify2: {} // https://github.com/mishoo/UglifyJS2
 
-gulp.task 'build:js', (cb) ->
-    gulp.src config.coffee
+gulp.task 'build:require', () ->
+    return gulp.src 'bower_components/requirejs/require.js', { base: './bower_components/requirejs' }
+    .pipe gulp.dest config.scripts
+
+gulp.task 'build:zepto', () ->
+    return gulp.src [
+        'bower_components/zeptojs/src/zepto.js',
+        'bower_components/zeptojs/src/event.js',
+        'bower_components/zeptojs/src/ajax.js',
+        'bower_components/zeptojs/src/ie.js',
+        'bower_components/zeptojs/src/detect.js',
+        'bower_components/zeptojs/src/fx.js',
+        'bower_components/zeptojs/src/deferred.js',
+        'bower_components/zeptojs/src/callbacks.js',
+        'bower_components/zeptojs/src/touch.js',
+        'bower_components/zeptojs/src/gesture.js'
+    ]
+    .pipe $.concat 'zepto.js'
+    .pipe gulp.dest tmp
+
+gulp.task 'build:underscore', () ->
+    return gulp.src 'bower_components/underscore/underscore.js', { base: './bower_components/underscore' }
+    .pipe gulp.dest tmp
+
+gulp.task 'build:md5', () ->
+    return gulp.src 'bower_components/JavaScript-MD5/js/md5.js', { base: './bower_components/JavaScript-MD5/js' }
+    .pipe gulp.dest tmp
+
+gulp.task 'build:way', () ->
+    return gulp.src 'bower_components/way.js/way.js', { base: './bower_components/way.js' }
+    .pipe gulp.dest tmp
+
+gulp.task 'build:app', () ->
+    return gulp.src config.coffee
     .pipe $.coffee()
-    .pipe gulp.dest "#{ config.tmp }/js"
+    .pipe gulp.dest tmp
+
+gulp.task 'build:optimize', () ->
+    return gulp.src tmp, { base: tmp }
     .pipe $.requirejsOptimize options
     .pipe gulp.dest config.scripts
+
+gulp.task 'build:js', (cb) ->
+    runSequence [
+        'build:require',
+        'build:zepto',
+        'build:underscore',
+        'build:md5',
+        'build:way',
+        'build:app'
+    ], 'build:optimize', cb

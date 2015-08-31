@@ -3,7 +3,7 @@ $ = require('gulp-load-plugins')()
 merge = require 'merge-stream'
 config = require '../config'
 
-gulp.task 'build:css', (cb) ->
+gulp.task 'build:css', () ->
     sCss = gulp.src config.css, { base: './src/css' }
         .pipe gulp.dest "#{config.tmp}/css"
     sLess = gulp.src config.less
