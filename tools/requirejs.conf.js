@@ -9,7 +9,7 @@ requirejs.config({
     },
     shim: {
         jquery: {
-            exports: '$'
+            exports: 'Zepto'
         },
         md5: {
             exports: 'md5'
