@@ -1,10 +1,9 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
-async = require 'async'
 merge = require 'merge-stream'
 runSequence = require 'run-sequence'
-es = require 'event-stream'
 config = require '../config'
+
 tmp = "#{ config.tmp }/js"
 
 # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
@@ -18,7 +17,7 @@ options =
     #   closure: 使用 Google's Closure Compiler 的简单优化模式
     #   closure.keepLines: 使用 closure，但保持换行
     #   none: 不压缩代码
-    optimize: 'none'
+    # optimize: 'none'
     # 模块根目录。默认情况下所有模块资源都相对此目录。
     # 若该值未指定，模块则相对build文件所在目录。
     # 若appDir值已指定，模块根目录baseUrl则相对appDir。
@@ -44,48 +43,10 @@ options =
 
 gulp.task 'build:require', () ->
     return gulp.src 'bower_components/requirejs/require.js', { base: './bower_components/requirejs' }
-    .pipe gulp.dest config.scripts
-
-gulp.task 'build:zepto', (cb) ->
-    return gulp.src [
-        'bower_components/zeptojs/src/zepto.js',
-        'bower_components/zeptojs/src/event.js',
-        'bower_components/zeptojs/src/ajax.js',
-        'bower_components/zeptojs/src/ie.js',
-        'bower_components/zeptojs/src/detect.js',
-        'bower_components/zeptojs/src/fx.js',
-        'bower_components/zeptojs/src/deferred.js',
-        'bower_components/zeptojs/src/callbacks.js',
-        'bower_components/zeptojs/src/touch.js',
-        'bower_components/zeptojs/src/gesture.js'
-    ]
-    .pipe $.concat 'zepto.js'
-    .pipe gulp.dest tmp
-
-gulp.task 'build:underscore', (cb) ->
-    return gulp.src 'bower_components/underscore/underscore.js', { base: './bower_components/underscore' }
-    .pipe gulp.dest tmp
-
-gulp.task 'build:md5', (cb) ->
-    return gulp.src 'bower_components/JavaScript-MD5/js/md5.js', { base: './bower_components/JavaScript-MD5/js' }
-    .pipe gulp.dest tmp
-
-gulp.task 'build:way', (cb) ->
-    return gulp.src 'bower_components/way.js/way.js', { base: './bower_components/way.js' }
-    .pipe gulp.dest tmp
-
-gulp.task 'build:app', (cb) ->
-    return gulp.src config.coffee
-    .pipe $.coffee()
-    .pipe gulp.dest tmp
-
-gulp.task 'run:js', (cb) ->
-    return gulp.src tmp, { base: tmp }
-    .pipe $.requirejsOptimize options
+    .pipe $.uglify()
     .pipe gulp.dest config.scripts
 
 gulp.task 'build:js', ['build:require'], (cb) ->
-    #runSequence ['build:require', 'build:zepto', 'build:underscore', 'build:md5', 'build:way', 'build:app'], 'run:js', cb
     zepto = gulp.src [
         'bower_components/zeptojs/src/zepto.js',
         'bower_components/zeptojs/src/event.js',
@@ -104,12 +65,12 @@ gulp.task 'build:js', ['build:require'], (cb) ->
     way = gulp.src 'bower_components/way.js/way.js', { base: './bower_components/way.js' }
     app = gulp.src config.coffee
     .pipe $.coffee()
-    all = es.merge zepto, underscore, md5, way, app
-    #.pipe gulp.dest tmp
-    .pipe $.tap (file) ->
-        #file.base = file.cwd = tmp
-        console.log file.cwd
-        console.log file.base
-        console.log file.path
-    #.pipe $.requirejsOptimize options
-    .pipe gulp.dest config.scripts
+
+    return merge zepto, underscore, md5, way, app
+    .pipe gulp.dest tmp
+    .on 'end', () ->
+        gulp.src "#{tmp}/**"
+        .pipe $.tap (file) ->
+            console.log file.path
+        .pipe $.requirejsOptimize options
+        .pipe gulp.dest config.scripts
