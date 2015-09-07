@@ -12,6 +12,8 @@ gulp.task 'build:css', () ->
         .pipe gulp.dest tmp
 
     merge sCss, sLess
+    .pipe $.size { showFiles: true, title: 'source' }
     .pipe $.minifyCss()
     .pipe $.filter 'index.css'
     .pipe gulp.dest config.styles
+    .pipe $.size { showFiles: true, title: 'minified' }

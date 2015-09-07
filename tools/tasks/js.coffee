@@ -43,8 +43,10 @@ options =
 
 gulp.task 'build:require', () ->
     return gulp.src 'bower_components/requirejs/require.js', { base: './bower_components/requirejs' }
+    .pipe $.size { showFiles: true, title: 'source' }
     .pipe $.uglify()
     .pipe gulp.dest config.scripts
+    .pipe $.size { showFiles: true, title: 'minified' }
 
 gulp.task 'build:js', ['build:require'], (cb) ->
     zepto = gulp.src [
@@ -70,7 +72,7 @@ gulp.task 'build:js', ['build:require'], (cb) ->
     .pipe gulp.dest tmp
     .on 'end', () ->
         gulp.src "#{tmp}/**"
-        .pipe $.tap (file) ->
-            console.log file.path
+        .pipe $.size { showFiles: true, title: 'source' }
         .pipe $.requirejsOptimize options
         .pipe gulp.dest config.scripts
+        .pipe $.size { showFiles: true, title: 'minified' }
