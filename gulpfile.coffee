@@ -24,7 +24,7 @@ gulp.task 'serve', () ->
 
     browserSync.init settings
 
-    gulp.watch [config.css, config.less], ['build:css']
+    gulp.watch config.less, ['build:css']
     gulp.watch config.coffee, ['build:js']
     gulp.watch config.jade, ['build:html']
     gulp.watch ["#{config.dist}/**", './gulpfile.coffee', './tools/**']
