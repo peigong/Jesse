@@ -6,14 +6,16 @@ config = require '../config'
 tmp = "#{config.tmp}/css"
 gulp.task 'build:css', () ->
     sCss = gulp.src config.css, { base: './src/css' }
-        .pipe gulp.dest tmp
-    sLess = gulp.src config.less
+    sLess = gulp.src config.less, { base: './src/less'}
         .pipe $.less()
-        .pipe gulp.dest tmp
 
     merge sCss, sLess
-    .pipe $.size { showFiles: true, title: 'source' }
-    .pipe $.minifyCss()
-    .pipe $.filter 'index.css'
-    .pipe gulp.dest config.styles
-    .pipe $.size { showFiles: true, title: 'minified' }
+    .pipe gulp.dest tmp
+    .on 'end', () ->
+        console.log tmp
+        gulp.src tmp
+        .pipe $.size { showFiles: true, title: 'source' }
+        .pipe $.minifyCss()
+        .pipe $.filter 'index.css'
+        .pipe gulp.dest config.styles
+        .pipe $.size { showFiles: true, title: 'minified' }
