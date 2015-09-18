@@ -15,8 +15,14 @@ html
                 ul
                     li(role="toggle" aria-controls="stock_manager") 股票设置
                     li(role="toggle" aria-controls="settings_manager") 系数设置
-        div#stock_manager.wrapper
-        div#settings_manager.wrapper
+        div#stock_manager
+            section
+                header
+                    span(role="close" aria-controls="stock_manager") X
+        div#settings_manager
+            section
+                header
+                    span(role="close" aria-controls="settings_manager") X
         div.wrapper
             aside
             section

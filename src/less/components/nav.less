@@ -1,0 +1,28 @@
+/**
+* 导航样式
+*/
+@import url('../themes/light-green.less');
+
+header nav {
+    display: inline-block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    ul {
+        li {
+            display: inline-block;
+            padding-left: 0.3rem;
+            padding-right: 0.3rem;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+            color: @brand-primary;
+            background-color: @background-color;
+            font-weight: normal;
+            border: 1px solid @brand-primary;
+            border-radius: 0.3rem;
+        }
+        li:hover {
+            color: @background-color;
+            background-color: @brand-primary;
+        }
+    }
+}

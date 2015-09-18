@@ -30,4 +30,4 @@ gulp.task 'serve', () ->
     gulp.watch ["#{config.dist}/**", './gulpfile.coffee', './tools/**']
     .on 'change', browserSync.reload
 
-gulp.task 'default', ['serve']
+gulp.task 'default', ['build']
