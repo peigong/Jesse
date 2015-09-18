@@ -13,10 +13,10 @@ html
             h1 Jesse Lauriston Livermore，1877--1940
             nav
                 ul
-                    li
-                        a(id="stock_handler" href="####") 股票设置
-                    li
-                        a(id="settings_handler" href="####") 系数设置
+                    li(role="toggle" aria-controls="stock_manager") 股票设置
+                    li(role="toggle" aria-controls="settings_manager") 系数设置
+        div#stock_manager.wrapper
+        div#settings_manager.wrapper
         div.wrapper
             aside
             section
