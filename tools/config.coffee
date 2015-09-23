@@ -7,3 +7,5 @@ module.exports =
     dist: './dist/jesse'
     styles: './dist/jesse/styles'
     scripts: './dist/jesse/scripts'
+    errorHandler: (err) ->
+        console.log "#{err.plugin} -> #{err.message}"

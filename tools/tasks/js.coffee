@@ -66,12 +66,14 @@ gulp.task 'build:js', ['build:require'], (cb) ->
     md5 = gulp.src 'bower_components/JavaScript-MD5/js/md5.js', { base: './bower_components/JavaScript-MD5/js' }
     way = gulp.src 'bower_components/way.js/way.js', { base: './bower_components/way.js' }
     app = gulp.src config.coffee
+    .pipe $.plumber { errorHandler: config.errorHandler }
     .pipe $.coffee()
 
     return merge zepto, underscore, md5, way, app
     .pipe gulp.dest tmp
     .on 'end', () ->
         gulp.src "#{tmp}/**"
+        .pipe $.plumber { errorHandler: config.errorHandler }
         .pipe $.size { showFiles: true, title: 'source' }
         .pipe $.requirejsOptimize options
         .pipe gulp.dest config.scripts

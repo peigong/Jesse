@@ -6,9 +6,10 @@ config = require '../config'
 tmp = "#{config.tmp}/css"
 gulp.task 'build:css', () ->
     gulp.src config.less
-        .pipe $.less()
-        .pipe $.size { showFiles: true, title: 'build:css source' }
-        .pipe $.filter 'index.css'
-        .pipe $.minifyCss()
-        .pipe gulp.dest config.styles
-        .pipe $.size { showFiles: true, title: 'build:css minified' }
+    .pipe $.plumber { errorHandler: config.errorHandler }
+    .pipe $.less()
+    .pipe $.size { showFiles: true, title: 'build:css source' }
+    .pipe $.filter 'index.css'
+    .pipe $.minifyCss()
+    .pipe gulp.dest config.styles
+    .pipe $.size { showFiles: true, title: 'build:css minified' }
