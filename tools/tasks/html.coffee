@@ -9,5 +9,6 @@ gulp.task 'build:html', () ->
     .pipe $.jade({
         pretty: true
     })
+    .pipe $.filter 'index.html'
     .pipe gulp.dest config.dist
     .pipe $.size { showFiles: true, title: 'minified' }
