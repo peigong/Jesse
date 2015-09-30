@@ -1,9 +1,10 @@
 require [
-    'jquery',
-    'md5',
-    'underscore',
+    'jquery'
+    'md5'
+    'underscore'
     'way'
-], ($, md5, _, way) ->
+    'ui'
+], ($, md5, _, way, ui) ->
     console.log $
     console.log md5
     console.log _

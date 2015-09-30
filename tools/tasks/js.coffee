@@ -17,7 +17,7 @@ options =
     #   closure: 使用 Google's Closure Compiler 的简单优化模式
     #   closure.keepLines: 使用 closure，但保持换行
     #   none: 不压缩代码
-    # optimize: 'none'
+    optimize: 'none'
     # 模块根目录。默认情况下所有模块资源都相对此目录。
     # 若该值未指定，模块则相对build文件所在目录。
     # 若appDir值已指定，模块根目录baseUrl则相对appDir。
@@ -76,5 +76,7 @@ gulp.task 'build:js', ['build:require'], (cb) ->
         .pipe $.plumber { errorHandler: config.errorHandler }
         .pipe $.size { showFiles: true, title: 'source' }
         .pipe $.requirejsOptimize options
+        .pipe $.filter 'app.js'
+        # .pipe $.uglify()
         .pipe gulp.dest config.scripts
         .pipe $.size { showFiles: true, title: 'minified' }
